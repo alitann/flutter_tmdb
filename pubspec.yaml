@@ -33,13 +33,14 @@ dependencies:
   flutter_bloc: ^7.3.0
   http: ^0.13.3
   json_annotation: ^4.1.0
+  percent_indicator: ^3.0.1
 
 dev_dependencies:
-  flutter_lints: ^1.0.0
   build_runner: ^2.0.0
-  json_serializable: ^5.0.0
+  flutter_lints: ^1.0.0
   flutter_test:
     sdk: flutter
+  json_serializable: ^5.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

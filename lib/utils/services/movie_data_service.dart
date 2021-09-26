@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter_tmdb/constants/application_constants.dart';
+import '../../constants/application_constants.dart';
 
 import '../../modules/movies/models/movie_service_response.dart';
 import 'package:http/http.dart' as http;
@@ -24,8 +24,10 @@ class MovieDataService {
     if (response.statusCode == 200) {
       try {
         final json = jsonDecode(response.body);
+
         MovieServiceResponse movieServiceResponse =
             MovieServiceResponse.fromJson(json);
+
         return movieServiceResponse.results ?? [];
       } catch (e) {
         throw "Movies can not be received ${e.toString}";

@@ -168,6 +168,7 @@ class _MovieListViewState extends State<MovieListView> {
   }
 }
 
+//Different search approach, but we didn't use this delegate for this project.
 class DataSearch extends SearchDelegate<String> {
   final List<Movie> recentSearchedData;
   final List<Movie> data;
