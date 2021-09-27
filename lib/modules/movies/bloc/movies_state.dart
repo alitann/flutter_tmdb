@@ -20,14 +20,14 @@ class FailedMoviesState extends MoviesState {
 }
 
 class LoadedMoviesState extends MoviesState {
-  List<Movie> movies;
+  List<MovieViewModel> movies;
   LoadedMoviesState({
     required this.movies,
   });
 }
 
 class SearchedMoviesState extends MoviesState {
-  List<Movie> movies;
+  List<MovieViewModel> movies;
   SearchedMoviesState({
     required this.movies,
   });

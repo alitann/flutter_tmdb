@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_tmdb/core/constants/application_constants.dart';
+import '../core/init/language/locale_keys.g.dart';
+import '../modules/movies/viewmodel/movie_view_model.dart';
 import '../extensions/context_extension.dart';
 import '../modules/movies/models/movie.dart';
 import 'movie_detail_view.dart';
@@ -20,10 +22,10 @@ class _MovieListViewState extends State<MovieListView> {
   final TextEditingController filterContoller = TextEditingController();
   final FocusNode filterFocus = FocusNode();
 
-  List<Movie> findMovies = [];
-  List<Movie> firstMovies = [];
+  List<MovieViewModel> findMovies = [];
+  List<MovieViewModel> firstMovies = [];
 
-  final Widget _appBar = const Text('Movie viewer');
+  final Widget _appBar = const Text(LocaleKeys.title).tr();
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,7 @@ class _MovieListViewState extends State<MovieListView> {
 
           if (firstMovies.isNotEmpty) {
             findMovies = firstMovies
-                .where((element) => element.originalTitle
+                .where((element) => element.movie.originalTitle
                     .toString()
                     .toLowerCase()
                     .contains(value.toLowerCase()))
@@ -112,7 +114,7 @@ class _MovieListViewState extends State<MovieListView> {
         return ListView.builder(
           itemCount: state.movies.length,
           itemBuilder: (context, index) {
-            Movie movie = state.movies[index];
+            MovieViewModel movie = state.movies[index];
             return buildMovieCard(movie, index, context);
           },
         );
@@ -120,7 +122,7 @@ class _MovieListViewState extends State<MovieListView> {
         return ListView.builder(
           itemCount: state.movies.length,
           itemBuilder: (context, index) {
-            Movie movie = state.movies[index];
+            MovieViewModel movie = state.movies[index];
             return buildMovieCard(movie, index, context);
           },
         );
@@ -131,7 +133,8 @@ class _MovieListViewState extends State<MovieListView> {
     });
   }
 
-  Card buildMovieCard(Movie movie, int index, BuildContext context) {
+  Card buildMovieCard(
+      MovieViewModel movieViewModel, int index, BuildContext context) {
     return Card(
       child: ListTile(
         leading:
@@ -142,8 +145,7 @@ class _MovieListViewState extends State<MovieListView> {
             //   backgroundColor: Colors.transparent,
             // ),
             CachedNetworkImage(
-          imageUrl:
-              ApplicationConstants.imageBaseUrl + movie.posterPath.toString(),
+          imageUrl: movieViewModel.posterImageUrl,
           placeholder: (context, url) => const CircularProgressIndicator(),
           errorWidget: (context, url, error) => const Icon(Icons.error),
           imageBuilder: (context, imageProvider) => CircleAvatar(
@@ -152,7 +154,7 @@ class _MovieListViewState extends State<MovieListView> {
           ),
         ),
         title: Text(
-          movie.title.toString(),
+          movieViewModel.movie.title.toString(),
         ),
         trailing: const Icon(Icons.arrow_right),
         onTap: () {
@@ -160,7 +162,7 @@ class _MovieListViewState extends State<MovieListView> {
               context,
               MaterialPageRoute(
                   builder: (context) => MovieDetailView(
-                        movie: movie,
+                        movieViewModel: movieViewModel,
                       )));
         },
       ),

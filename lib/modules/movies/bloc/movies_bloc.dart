@@ -1,14 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../utils/services/movie_data_service.dart';
-import '../models/movie.dart';
+import '../viewmodel/movie_list_view_model.dart';
+import '../viewmodel/movie_view_model.dart';
 
 part 'movies_event.dart';
 part 'movies_state.dart';
 
 class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
-  final _dataService = MovieDataService();
-  List<Movie> searchedMovies = [];
+  final _dataService = MovieListViewModel();
+  List<MovieViewModel> searchedMovies = [];
 
   MoviesBloc() : super(LatestPageNumberMoviesState(1)) {
     on<FirstMoviesEvent>((event, emit) async {
@@ -47,7 +46,8 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     }
   }
 
-  Future<void> setMovies(Emitter<MoviesState> emit, List<Movie> movies) async {
+  Future<void> setMovies(
+      Emitter<MoviesState> emit, List<MovieViewModel> movies) async {
     emit(LoadingMoviesState());
 
     try {
