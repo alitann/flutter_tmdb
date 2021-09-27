@@ -1,11 +1,10 @@
 import 'dart:convert';
 
-import '../../constants/application_constants.dart';
-
-import '../../modules/movies/models/movie_service_response.dart';
 import 'package:http/http.dart' as http;
 
+import '../../core/constants/application_constants.dart';
 import '../../modules/movies/models/movie.dart';
+import '../../modules/movies/models/movie_service_response.dart';
 
 class MovieDataService {
   // final _baseUrl =

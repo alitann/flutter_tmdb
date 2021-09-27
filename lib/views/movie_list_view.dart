@@ -1,6 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../constants/application_constants.dart';
+import 'package:flutter_tmdb/core/constants/application_constants.dart';
 import '../extensions/context_extension.dart';
 import '../modules/movies/models/movie.dart';
 import 'movie_detail_view.dart';
@@ -130,26 +131,25 @@ class _MovieListViewState extends State<MovieListView> {
     });
   }
 
-  AppBar buildAppBar(BuildContext context) {
-    return AppBar(
-      title: const Text('Movie viewer'),
-      actions: [
-        Padding(
-          padding: EdgeInsets.only(right: context.lowValue),
-          child: IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
-        ),
-      ],
-    );
-  }
-
   Card buildMovieCard(Movie movie, int index, BuildContext context) {
     return Card(
       child: ListTile(
-        leading: CircleAvatar(
-          radius: 20.0,
-          backgroundImage: NetworkImage(
-              ApplicationConstants.imageBaseUrl + movie.posterPath.toString()),
-          backgroundColor: Colors.transparent,
+        leading:
+            // CircleAvatar(
+            //   radius: 20.0,
+            //   backgroundImage: CachedNetworkImageProvider(
+            //       ApplicationConstants.imageBaseUrl + movie.posterPath.toString()),
+            //   backgroundColor: Colors.transparent,
+            // ),
+            CachedNetworkImage(
+          imageUrl:
+              ApplicationConstants.imageBaseUrl + movie.posterPath.toString(),
+          placeholder: (context, url) => const CircularProgressIndicator(),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+          imageBuilder: (context, imageProvider) => CircleAvatar(
+            radius: 20,
+            backgroundImage: imageProvider,
+          ),
         ),
         title: Text(
           movie.title.toString(),

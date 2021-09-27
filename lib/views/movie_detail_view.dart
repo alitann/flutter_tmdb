@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tmdb/core/constants/application_constants.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import '../constants/application_constants.dart';
 import '../extensions/context_extension.dart';
 import '../modules/movies/models/movie.dart';
 

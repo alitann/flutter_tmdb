@@ -7,4 +7,6 @@ class ApplicationConstants {
 
   //to get image for selected movie
   static const imageBaseUrl = 'https://image.tmdb.org/t/p/original';
+
+  static const languageAssetPath = 'assets/tranlations';
 }
