@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tmdb/extensions/context_extension.dart';
-import 'package:flutter_tmdb/modules/movies/viewmodel/movie_view_model.dart';
-import 'package:flutter_tmdb/style/colors.dart';
+import '../../../extensions/context_extension.dart';
+import '../viewmodel/movie_view_model.dart';
+import '../../../style/colors.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 

@@ -4,12 +4,6 @@ abstract class MoviesState {}
 
 class InitialMoviesState extends MoviesState {}
 
-// class LatestPageNumberMoviesState extends MoviesState {
-//   final int pageNumber;
-
-//   LatestPageNumberMoviesState(this.pageNumber);
-// }
-
 class LoadingMoviesState extends MoviesState {}
 
 class FailedMoviesState extends MoviesState {

@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_tmdb/core/init/language/locale_keys.g.dart';
-import 'package:flutter_tmdb/extensions/context_extension.dart';
-import 'package:flutter_tmdb/modules/movies/bloc/movies_bloc.dart';
-import 'package:flutter_tmdb/modules/movies/models/movie.dart';
-import 'package:flutter_tmdb/modules/movies/viewmodel/movie_view_model.dart';
+import '../../../core/init/language/locale_keys.g.dart';
+import '../../../extensions/context_extension.dart';
+import '../bloc/movies_bloc.dart';
+import '../models/movie.dart';
+import '../viewmodel/movie_view_model.dart';
 import 'movie_detail_view.dart';
 
 class MovieListView extends StatefulWidget {
