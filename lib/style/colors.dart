@@ -15,4 +15,6 @@ class ColorConstants {
   };
 
   static MaterialColor primarySwatchColor = MaterialColor(0xFF032541, color);
+
+  static const Color primaryColor = Color(0XFF032541);
 }

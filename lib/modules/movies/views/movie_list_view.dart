@@ -2,13 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../core/init/language/locale_keys.g.dart';
-import '../modules/movies/viewmodel/movie_view_model.dart';
-import '../extensions/context_extension.dart';
-import '../modules/movies/models/movie.dart';
+import 'package:flutter_tmdb/core/init/language/locale_keys.g.dart';
+import 'package:flutter_tmdb/extensions/context_extension.dart';
+import 'package:flutter_tmdb/modules/movies/bloc/movies_bloc.dart';
+import 'package:flutter_tmdb/modules/movies/models/movie.dart';
+import 'package:flutter_tmdb/modules/movies/viewmodel/movie_view_model.dart';
 import 'movie_detail_view.dart';
-
-import '../modules/movies/bloc/movies_bloc.dart';
 
 class MovieListView extends StatefulWidget {
   const MovieListView({Key? key}) : super(key: key);
@@ -37,6 +36,14 @@ class _MovieListViewState extends State<MovieListView> {
           filterContoller.text = "";
         }
       });
+    }
+
+    void incrementPageNumber() {
+      BlocProvider.of<MoviesBloc>(context).add(IncreasePageMoviesEvent());
+    }
+
+    void decrementPageNumber() {
+      BlocProvider.of<MoviesBloc>(context).add(DecreasePageMoviesEvent());
     }
 
     TextField _appBarSearch = TextField(
@@ -85,9 +92,19 @@ class _MovieListViewState extends State<MovieListView> {
                     ? IconButton(
                         icon: const Icon(Icons.cancel),
                         onPressed: () => openCloseSearchBar())
-                    : IconButton(
-                        icon: const Icon(Icons.search),
-                        onPressed: () => openCloseSearchBar()),
+                    : Row(
+                        children: [
+                          IconButton(
+                              icon: const Icon(Icons.arrow_back),
+                              onPressed: () => decrementPageNumber()),
+                          IconButton(
+                              icon: const Icon(Icons.arrow_forward),
+                              onPressed: () => incrementPageNumber()),
+                          IconButton(
+                              icon: const Icon(Icons.search),
+                              onPressed: () => openCloseSearchBar()),
+                        ],
+                      ),
               ),
             ],
           ),

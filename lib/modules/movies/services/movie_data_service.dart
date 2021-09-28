@@ -5,12 +5,14 @@ import '../models/movie.dart';
 import '../models/movie_service_response.dart';
 import 'package:http/http.dart' as http;
 
-class MovieDataService {
+import 'imovie_data_service.dart';
+
+class MovieDataService extends IMovieDataService {
   final String _baseUrl = ApplicationConstants.baseUrl +
       ApplicationConstants.discoverPath +
       ApplicationConstants.apiKeyParameter +
       ApplicationConstants.apiKey +
-      '&page=';
+      '&sort_by=popularity.desc&page=';
 
   Future<List<Movie>> getMovies({int pageNumber = 1}) async {
     var url = Uri.parse(_baseUrl + pageNumber.toString());

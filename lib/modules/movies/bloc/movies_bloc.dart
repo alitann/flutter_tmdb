@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_tmdb/core/constants/application_constants.dart';
 import '../viewmodel/movie_list_view_model.dart';
 import '../viewmodel/movie_view_model.dart';
 
@@ -8,24 +9,31 @@ part 'movies_state.dart';
 class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   final _dataService = MovieListViewModel();
   List<MovieViewModel> searchedMovies = [];
+  int pageNumber = 1;
 
-  MoviesBloc() : super(LatestPageNumberMoviesState(1)) {
+  MoviesBloc() : super(InitialMoviesState()) {
     on<FirstMoviesEvent>((event, emit) async {
-      int pageNumber = (state as LatestPageNumberMoviesState).pageNumber;
-
+      // int pageNumber = (state as LatestPageNumberMoviesState).pageNumber;
+      pageNumber = 1;
       await _getMovies(emit, pageNumber);
     });
 
     on<DecreasePageMoviesEvent>((event, emit) async {
-      int pageNumber = (state as LatestPageNumberMoviesState).pageNumber - 1;
+      // int pageNumber = (state as LatestPageNumberMoviesState).pageNumber - 1;
 
-      if (pageNumber > 0) await _getMovies(emit, pageNumber);
+      if (pageNumber > 1) {
+        pageNumber--;
+        await _getMovies(emit, pageNumber);
+      }
     });
 
     on<IncreasePageMoviesEvent>((event, emit) async {
-      int pageNumber = (state as LatestPageNumberMoviesState).pageNumber - 1;
+      // int pageNumber = (state as LatestPageNumberMoviesState).pageNumber + 1;
 
-      await _getMovies(emit, pageNumber);
+      if (pageNumber < ApplicationConstants.apiTotalPagesNumber) {
+        pageNumber++;
+        await _getMovies(emit, pageNumber);
+      }
     });
 
     on<SearchPageMoviesEvent>((event, emit) async {
@@ -38,7 +46,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
 
     try {
       final movies = await _dataService.getMovies(pageNumber: pageNumber);
-      emit(LatestPageNumberMoviesState(pageNumber));
+      // emit(LatestPageNumberMoviesState(pageNumber));
 
       emit(LoadedMoviesState(movies: movies));
     } catch (e) {
