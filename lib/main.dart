@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'modules/movies/views/movie_list_view.dart';
 
 import 'core/constants/application_constants.dart';
 import 'core/init/language/language_manager.dart';
 import 'modules/movies/bloc/movies_bloc.dart';
+import 'modules/movies/views/movie_list_view.dart';
 import 'style/colors.dart';
 
 Future<void> main() async {

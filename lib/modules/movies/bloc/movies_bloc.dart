@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../core/constants/application_constants.dart';
 import '../viewmodel/movie_list_view_model.dart';
 import '../viewmodel/movie_view_model.dart';
@@ -7,7 +8,7 @@ part 'movies_event.dart';
 part 'movies_state.dart';
 
 class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
-  final _dataService = MovieListViewModel();
+  final _movieListViewModel = MovieListViewModel();
   List<MovieViewModel> searchedMovies = [];
   int pageNumber = 1;
 
@@ -40,7 +41,8 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     emit(LoadingMoviesState());
 
     try {
-      final movies = await _dataService.getMovies(pageNumber: pageNumber);
+      final movies =
+          await _movieListViewModel.getMovies(pageNumber: pageNumber);
       emit(LoadedMoviesState(movies: movies));
     } catch (e) {
       emit(FailedMoviesState(errorMessage: e.toString()));
