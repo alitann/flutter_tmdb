@@ -2,12 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../core/constants/navigation_constants.dart';
+import '../../../core/init/navigation/navigation_service.dart';
 import '../../../core/init/language/locale_keys.g.dart';
 import '../../../extensions/context_extension.dart';
 import '../bloc/movies_bloc.dart';
 import '../models/movie.dart';
 import '../viewmodel/movie_view_model.dart';
-import 'movie_detail_view.dart';
 
 class MovieListView extends StatefulWidget {
   const MovieListView({Key? key}) : super(key: key);
@@ -25,6 +26,8 @@ class _MovieListViewState extends State<MovieListView> {
   List<MovieViewModel> firstMovies = [];
 
   final Widget _appBar = const Text(LocaleKeys.title).tr();
+
+  NavigationService navigation = NavigationService.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -154,35 +157,37 @@ class _MovieListViewState extends State<MovieListView> {
       MovieViewModel movieViewModel, int index, BuildContext context) {
     return Card(
       child: ListTile(
-        leading:
-            // CircleAvatar(
-            //   radius: 20.0,
-            //   backgroundImage: CachedNetworkImageProvider(
-            //       ApplicationConstants.imageBaseUrl + movie.posterPath.toString()),
-            //   backgroundColor: Colors.transparent,
-            // ),
-            CachedNetworkImage(
-          imageUrl: movieViewModel.posterImageUrl,
-          placeholder: (context, url) => const CircularProgressIndicator(),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
-          imageBuilder: (context, imageProvider) => CircleAvatar(
-            radius: 20,
-            backgroundImage: imageProvider,
+          leading:
+              // CircleAvatar(
+              //   radius: 20.0,
+              //   backgroundImage: CachedNetworkImageProvider(
+              //       ApplicationConstants.imageBaseUrl + movie.posterPath.toString()),
+              //   backgroundColor: Colors.transparent,
+              // ),
+              CachedNetworkImage(
+            imageUrl: movieViewModel.posterImageUrl,
+            placeholder: (context, url) => const CircularProgressIndicator(),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+            imageBuilder: (context, imageProvider) => CircleAvatar(
+              radius: 20,
+              backgroundImage: imageProvider,
+            ),
           ),
-        ),
-        title: Text(
-          movieViewModel.movie.title.toString(),
-        ),
-        trailing: const Icon(Icons.arrow_right),
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => MovieDetailView(
-                        movieViewModel: movieViewModel,
-                      )));
-        },
-      ),
+          title: Text(
+            movieViewModel.movie.title.toString(),
+          ),
+          trailing: const Icon(Icons.arrow_right),
+          onTap: () => navigation.navigateToPage(
+              path: NavigationConstants.movieDetailView, data: movieViewModel)
+          // {
+          //   Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //           builder: (context) => MovieDetailView(
+          //                 movieViewModel: movieViewModel,
+          //               )));
+          // },
+          ),
     );
   }
 }

@@ -1,9 +1,7 @@
-import '../../../core/init/network/network_base.dart';
-
 import '../../../core/constants/application_constants.dart';
+import '../../../core/network/network_base.dart';
 import '../models/movie.dart';
 import '../models/movie_service_response.dart';
-
 import 'imovie_data_service.dart';
 
 class MovieDataService extends IMovieDataService {

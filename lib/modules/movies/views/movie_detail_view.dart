@@ -7,6 +7,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class MovieDetailView extends StatelessWidget {
   final MovieViewModel movieViewModel;
+
   const MovieDetailView({Key? key, required this.movieViewModel})
       : super(key: key);
 

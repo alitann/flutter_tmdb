@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import '../exception/application_exception.dart';
 import 'package:http/http.dart' as http;
+
+import '../exception/application_exception.dart';
 
 class NetworkBase {
   Future<dynamic> get(String url) async {
