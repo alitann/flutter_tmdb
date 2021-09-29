@@ -36,8 +36,9 @@ class MovieApp extends StatelessWidget {
       title: 'Movie App',
       theme: ThemeData(primarySwatch: ColorConstants.primarySwatchColor),
       home: BlocProvider<MoviesBloc>(
-          create: (context) => MoviesBloc()..add(FirstMoviesEvent()),
-          child: const MovieListView()),
+        create: (context) => MoviesBloc()..add(FirstMoviesEvent()),
+        child: const MovieListView(),
+      ),
       debugShowCheckedModeBanner: false,
     );
   }

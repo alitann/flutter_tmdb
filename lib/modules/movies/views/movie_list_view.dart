@@ -97,6 +97,10 @@ class _MovieListViewState extends State<MovieListView> {
                         onPressed: () => openCloseSearchBar())
                     : Row(
                         children: [
+                          buildPageNumberText(),
+                          SizedBox(
+                            width: context.lowValue,
+                          ),
                           IconButton(
                               icon: const Icon(Icons.arrow_back),
                               onPressed: () => decrementPageNumber()),
@@ -113,6 +117,13 @@ class _MovieListViewState extends State<MovieListView> {
           ),
           body: buildBody()),
     );
+  }
+
+  BlocBuilder<MoviesBloc, MoviesState> buildPageNumberText() {
+    return BlocBuilder<MoviesBloc, MoviesState>(builder: (context, state) {
+      return Text(
+          'Page ' + BlocProvider.of<MoviesBloc>(context).pageNumber.toString());
+    });
   }
 
   void showFoundedMovies(BuildContext context) {
@@ -157,14 +168,7 @@ class _MovieListViewState extends State<MovieListView> {
       MovieViewModel movieViewModel, int index, BuildContext context) {
     return Card(
       child: ListTile(
-          leading:
-              // CircleAvatar(
-              //   radius: 20.0,
-              //   backgroundImage: CachedNetworkImageProvider(
-              //       ApplicationConstants.imageBaseUrl + movie.posterPath.toString()),
-              //   backgroundColor: Colors.transparent,
-              // ),
-              CachedNetworkImage(
+          leading: CachedNetworkImage(
             imageUrl: movieViewModel.posterImageUrl,
             placeholder: (context, url) => const CircularProgressIndicator(),
             errorWidget: (context, url, error) => const Icon(Icons.error),
@@ -178,16 +182,7 @@ class _MovieListViewState extends State<MovieListView> {
           ),
           trailing: const Icon(Icons.arrow_right),
           onTap: () => navigation.navigateToPage(
-              path: NavigationConstants.movieDetailView, data: movieViewModel)
-          // {
-          //   Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //           builder: (context) => MovieDetailView(
-          //                 movieViewModel: movieViewModel,
-          //               )));
-          // },
-          ),
+              path: NavigationConstants.movieDetailView, data: movieViewModel)),
     );
   }
 }
