@@ -1,9 +1,10 @@
+import 'package:flutter_tmdb/core/network/inetwork_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'movie.g.dart';
 
 @JsonSerializable()
-class Movie {
+class Movie extends INetworkModel {
   bool? adult;
 
   @JsonKey(name: 'backdrop_path')
@@ -50,5 +51,12 @@ class Movie {
       this.voteCount});
 
   factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);
+
+  @override
   Map<String, dynamic> toJson() => _$MovieToJson(this);
+
+  @override
+  fromJson(Map<String, dynamic> json) {
+    Movie.fromJson(json);
+  }
 }

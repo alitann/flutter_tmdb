@@ -1,10 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../core/constants/navigation_constants.dart';
 import '../../../core/init/navigation/navigation_service.dart';
-import '../../../core/init/language/locale_keys.g.dart';
 import '../../../extensions/context_extension.dart';
 import '../bloc/movies_bloc.dart';
 import '../models/movie.dart';
@@ -22,10 +21,11 @@ class _MovieListViewState extends State<MovieListView> {
   final TextEditingController filterContoller = TextEditingController();
   final FocusNode filterFocus = FocusNode();
 
-  List<MovieViewModel> findMovies = [];
-  List<MovieViewModel> firstMovies = [];
+  List<MovieViewModel> filteredMovies = [];
+  List<MovieViewModel> movies = [];
 
-  final Widget _appBar = const Text(LocaleKeys.title).tr();
+  final Widget _appBar =
+      const Text('Popular Movies'); //const Text(LocaleKeys.title).tr();
 
   NavigationService navigation = NavigationService.instance;
 
@@ -53,15 +53,10 @@ class _MovieListViewState extends State<MovieListView> {
         onChanged: (value) {
           resetMovies(context);
 
-          if (firstMovies.isNotEmpty) {
-            findMovies = firstMovies
-                .where((element) => element.movie.originalTitle
-                    .toString()
-                    .toLowerCase()
-                    .contains(value.toLowerCase()))
-                .toList();
+          if (movies.isNotEmpty) {
+            filterMovies(value);
 
-            showFoundedMovies(context);
+            showFilteredMovies(context);
           }
         },
         style: const TextStyle(color: Colors.white),
@@ -95,28 +90,43 @@ class _MovieListViewState extends State<MovieListView> {
                     ? IconButton(
                         icon: const Icon(Icons.cancel),
                         onPressed: () => openCloseSearchBar())
-                    : Row(
-                        children: [
-                          buildPageNumberText(),
-                          SizedBox(
-                            width: context.lowValue,
-                          ),
-                          IconButton(
-                              icon: const Icon(Icons.arrow_back),
-                              onPressed: () => decrementPageNumber()),
-                          IconButton(
-                              icon: const Icon(Icons.arrow_forward),
-                              onPressed: () => incrementPageNumber()),
-                          IconButton(
-                              icon: const Icon(Icons.search),
-                              onPressed: () => openCloseSearchBar()),
-                        ],
-                      ),
+                    : buildAppBarActions(context, decrementPageNumber,
+                        incrementPageNumber, openCloseSearchBar),
               ),
             ],
           ),
           body: buildBody()),
     );
+  }
+
+  Row buildAppBarActions(BuildContext context, Function() decrementPageNumber,
+      Function() incrementPageNumber, Function() openCloseSearchBar) {
+    return Row(
+      children: [
+        buildPageNumberText(),
+        SizedBox(
+          width: context.lowValue,
+        ),
+        IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => decrementPageNumber()),
+        IconButton(
+            icon: const Icon(Icons.arrow_forward),
+            onPressed: () => incrementPageNumber()),
+        IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () => openCloseSearchBar()),
+      ],
+    );
+  }
+
+  void filterMovies(String value) {
+    filteredMovies = movies
+        .where((element) => element.movie.originalTitle
+            .toString()
+            .toLowerCase()
+            .contains(value.toLowerCase()))
+        .toList();
   }
 
   BlocBuilder<MoviesBloc, MoviesState> buildPageNumberText() {
@@ -126,42 +136,62 @@ class _MovieListViewState extends State<MovieListView> {
     });
   }
 
-  void showFoundedMovies(BuildContext context) {
-    BlocProvider.of<MoviesBloc>(context).searchedMovies = findMovies;
+  void showFilteredMovies(BuildContext context) {
+    BlocProvider.of<MoviesBloc>(context).searchedMovies = filteredMovies;
     BlocProvider.of<MoviesBloc>(context).add(SearchPageMoviesEvent());
   }
 
   void resetMovies(BuildContext context) {
-    BlocProvider.of<MoviesBloc>(context).searchedMovies = firstMovies;
+    BlocProvider.of<MoviesBloc>(context).searchedMovies = movies;
     BlocProvider.of<MoviesBloc>(context).add(SearchPageMoviesEvent());
   }
 
   BlocBuilder<MoviesBloc, MoviesState> buildBody() {
     return BlocBuilder<MoviesBloc, MoviesState>(builder: (context, state) {
       if (state is LoadingMoviesState) {
-        return const Center(child: CircularProgressIndicator());
+        return handleLoadingMoviesState();
       } else if (state is LoadedMoviesState) {
-        firstMovies = state.movies;
-        return ListView.builder(
-          itemCount: state.movies.length,
-          itemBuilder: (context, index) {
-            MovieViewModel movie = state.movies[index];
-            return buildMovieCard(movie, index, context);
-          },
-        );
+        return handleLoadedMoviesState(state);
       } else if (state is SearchedMoviesState) {
-        return ListView.builder(
-          itemCount: state.movies.length,
-          itemBuilder: (context, index) {
-            MovieViewModel movie = state.movies[index];
-            return buildMovieCard(movie, index, context);
-          },
-        );
+        return handleSearchMoviesState(state);
       } else if (state is FailedMoviesState) {
-        return Center(child: Text(state.errorMessage));
+        return handleFailedMoviesState(state);
       }
-      return const Center(child: Text('Nothing'));
+      return doNothing();
     });
+  }
+
+  Center doNothing() {
+    return const Center(child: Text('Nothing'));
+  }
+
+  Center handleFailedMoviesState(FailedMoviesState state) {
+    return Center(child: Text(state.errorMessage));
+  }
+
+  ListView handleSearchMoviesState(SearchedMoviesState state) {
+    return ListView.builder(
+      itemCount: state.movies.length,
+      itemBuilder: (context, index) {
+        MovieViewModel movie = state.movies[index];
+        return buildMovieCard(movie, index, context);
+      },
+    );
+  }
+
+  ListView handleLoadedMoviesState(LoadedMoviesState state) {
+    movies = state.movies;
+    return ListView.builder(
+      itemCount: state.movies.length,
+      itemBuilder: (context, index) {
+        MovieViewModel movie = state.movies[index];
+        return buildMovieCard(movie, index, context);
+      },
+    );
+  }
+
+  Center handleLoadingMoviesState() {
+    return const Center(child: CircularProgressIndicator());
   }
 
   Card buildMovieCard(
