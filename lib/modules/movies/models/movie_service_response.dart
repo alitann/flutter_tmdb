@@ -1,4 +1,4 @@
-import 'package:flutter_tmdb/core/network/inetwork_model.dart';
+import '../../../core/network/inetwork_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'movie.dart';

@@ -6,15 +6,31 @@ import 'package:flutter_tmdb/modules/movies/models/movie.dart';
 import 'package:flutter_tmdb/modules/movies/viewmodel/movie_list_view_model.dart';
 import 'package:flutter_tmdb/modules/movies/viewmodel/movie_view_model.dart';
 
-class MockMoviesBloc extends MockBloc<MoviesEvent, MoviesState>
-    implements MoviesBloc {}
-
 void main() {
   MovieListViewModel movieListViewModel = MovieListViewModel();
+  // MockMoviesBloc mockMoviesBloc = MockMoviesBloc();
 
-  setUp(() {
-    movieListViewModel = MovieListViewModel();
-  });
+  // MockMovieListRepository movieListRepository = MockMovieListRepository();
+
+  Movie movie = Movie(
+      adult: false,
+      backdropPath: "/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg",
+      genreIds: [35, 28, 12, 878],
+      id: 550988,
+      originalLanguage: "en",
+      originalTitle: "Free Guy",
+      overview:
+          "A bank teller called Guy realizes he is a background character in an open world video game called Free City that will soon go offline.",
+      popularity: 5418.816,
+      posterPath: "/xmbU4JTUm8rsdtn7Y3Fcm30GpeT.jpg",
+      releaseDate: "2021-08-11",
+      title: "Free Guy",
+      video: false,
+      voteAverage: 7.9,
+      voteCount: 1312);
+
+  setUp(() {});
+
   tearDown(() {
     movieListViewModel.movies!.clear();
   });
@@ -26,24 +42,7 @@ void main() {
 
     test("Movie added", () {
       movieListViewModel.movies!.add(
-        MovieViewModel(
-          Movie(
-              adult: false,
-              backdropPath: "/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg",
-              genreIds: [35, 28, 12, 878],
-              id: 550988,
-              originalLanguage: "en",
-              originalTitle: "Free Guy",
-              overview:
-                  "A bank teller called Guy realizes he is a background character in an open world video game called Free City that will soon go offline.",
-              popularity: 5418.816,
-              posterPath: "/xmbU4JTUm8rsdtn7Y3Fcm30GpeT.jpg",
-              releaseDate: "2021-08-11",
-              title: "Free Guy",
-              video: false,
-              voteAverage: 7.9,
-              voteCount: 1312),
-        ),
+        MovieViewModel(movie),
       );
 
       expect(movieListViewModel.movies?.length, 1);
@@ -72,20 +71,20 @@ void main() {
   group('MoviesBloc', () {
     blocTest(
       'emits [initial] when nothing is added',
-      build: () => MoviesBloc(),
+      build: () => MoviesBloc(movieListViewModel: movieListViewModel),
       expect: () => [],
     );
 
     blocTest<MoviesBloc, MoviesState>(
       'emits [LoadingMoviesState] when FirstMoviesEvent is added',
-      build: () => MoviesBloc(),
+      build: () => MoviesBloc(movieListViewModel: movieListViewModel),
       act: (bloc) => bloc.add(FirstMoviesEvent()),
       expect: () => [isA<LoadingMoviesState>()],
     );
 
     blocTest<MoviesBloc, MoviesState>(
       'emits [SearchedMoviesState] when SearchPageMoviesEvent is added',
-      build: () => MoviesBloc(),
+      build: () => MoviesBloc(movieListViewModel: movieListViewModel),
       act: (bloc) => bloc.add(SearchPageMoviesEvent()),
       //wait: const Duration(milliseconds: 10000),
       expect: () => [isA<SearchedMoviesState>()],
@@ -93,17 +92,9 @@ void main() {
 
     blocTest<MoviesBloc, MoviesState>(
       'emits [LoadingMoviesState] when IncreasePageMoviesEvent is added',
-      build: () => MoviesBloc(),
+      build: () => MoviesBloc(movieListViewModel: movieListViewModel),
       act: (bloc) => bloc.add(IncreasePageMoviesEvent()),
       expect: () => [isA<LoadingMoviesState>()],
-    );
-
-    blocTest<MoviesBloc, MoviesState>(
-      'emits [LoadedMoviesState] when IncreasePageMoviesEvent is added',
-      build: () => MoviesBloc(),
-      act: (bloc) => bloc.add(IncreasePageMoviesEvent()),
-      skip: 1,
-      expect: () => [isA<LoadedMoviesState>()],
     );
   });
 }

@@ -8,11 +8,14 @@ part 'movies_event.dart';
 part 'movies_state.dart';
 
 class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
-  final _movieListViewModel = MovieListViewModel();
+  final MovieListViewModel _movieListViewModel;
+
   List<MovieViewModel> searchedMovies = [];
   int pageNumber = 1;
 
-  MoviesBloc() : super(InitialMoviesState()) {
+  MoviesBloc({required MovieListViewModel movieListViewModel})
+      : _movieListViewModel = movieListViewModel,
+        super(InitialMoviesState()) {
     on<FirstMoviesEvent>((event, emit) async {
       pageNumber = 1;
       await _getMovies(emit, pageNumber);
@@ -43,17 +46,6 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     try {
       final movies =
           await _movieListViewModel.getMovies(pageNumber: pageNumber);
-      emit(LoadedMoviesState(movies: movies));
-    } catch (e) {
-      emit(FailedMoviesState(errorMessage: e.toString()));
-    }
-  }
-
-  Future<void> setMovies(
-      Emitter<MoviesState> emit, List<MovieViewModel> movies) async {
-    emit(LoadingMoviesState());
-
-    try {
       emit(LoadedMoviesState(movies: movies));
     } catch (e) {
       emit(FailedMoviesState(errorMessage: e.toString()));

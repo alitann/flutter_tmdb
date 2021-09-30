@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_tmdb/core/constants/application_constants.dart';
-import 'package:flutter_tmdb/modules/movies/models/movie.dart';
+import '../../../core/constants/application_constants.dart';
+import '../models/movie.dart';
 import 'package:retrofit/http.dart';
 
 part 'api_service.g.dart';
