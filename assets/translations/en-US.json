@@ -1,4 +1,6 @@
 {
     "title": "Movie viewer",
-    "search": "Search..."
+    "search": "Search...",
+    "page": "Page",
+    "info": "Film listeleme ekranı"
 }

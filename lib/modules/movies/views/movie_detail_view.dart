@@ -23,7 +23,7 @@ class MovieDetailView extends StatelessWidget {
   }
 
   AppBar buildAppBar() =>
-      AppBar(title: Text(movieViewModel.movie.originalTitle.toString()));
+      AppBar(title: Text(movieViewModel.movie.title.toString()));
 
   SingleChildScrollView buildBody(BuildContext context, double percentage) {
     return SingleChildScrollView(

@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_tmdb/core/init/language/locale_keys.g.dart';
 
 import '../../../core/constants/navigation_constants.dart';
 import '../../../core/init/navigation/navigation_service.dart';
@@ -24,8 +26,7 @@ class _MovieListViewState extends State<MovieListView> {
   List<MovieViewModel> filteredMovies = [];
   List<MovieViewModel> movies = [];
 
-  final Widget _appBar =
-      const Text('Popular Movies'); //const Text(LocaleKeys.title).tr();
+  final Widget _appBar = const Text(LocaleKeys.title).tr();
 
   NavigationService navigation = NavigationService.instance;
 
@@ -66,7 +67,7 @@ class _MovieListViewState extends State<MovieListView> {
         decoration: const InputDecoration(
           fillColor: Colors.red,
           hintStyle: TextStyle(color: Colors.white),
-          hintText: 'Search Movie',
+          hintText: 'search...',
           prefixIcon: Icon(
             Icons.search,
             color: Colors.white,
@@ -122,7 +123,7 @@ class _MovieListViewState extends State<MovieListView> {
 
   void filterMovies(String value) {
     filteredMovies = movies
-        .where((element) => element.movie.originalTitle
+        .where((element) => element.movie.title
             .toString()
             .toLowerCase()
             .contains(value.toLowerCase()))
@@ -131,8 +132,8 @@ class _MovieListViewState extends State<MovieListView> {
 
   BlocBuilder<MoviesBloc, MoviesState> buildPageNumberText() {
     return BlocBuilder<MoviesBloc, MoviesState>(builder: (context, state) {
-      return Text(
-          'Page ' + BlocProvider.of<MoviesBloc>(context).pageNumber.toString());
+      return Text(LocaleKeys.page.tr() +
+          BlocProvider.of<MoviesBloc>(context).pageNumber.toString());
     });
   }
 
@@ -162,7 +163,7 @@ class _MovieListViewState extends State<MovieListView> {
   }
 
   Center doNothing() {
-    return const Center(child: Text('Nothing'));
+    return Center(child: const Text(LocaleKeys.info).tr());
   }
 
   Center handleFailedMoviesState(FailedMoviesState state) {
