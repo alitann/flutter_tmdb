@@ -1,8 +1,6 @@
-import 'package:flutter_tmdb/modules/movies/models/movie_service_response.dart';
-import 'package:flutter_tmdb/modules/movies/services/api_service.dart';
-
+import '../models/movie_service_response.dart';
+import '../services/api_service.dart';
 import '../services/movie_data_service.dart';
-
 import 'movie_view_model.dart';
 
 class MovieListViewModel {

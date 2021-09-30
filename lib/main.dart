@@ -2,14 +2,14 @@ import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_tmdb/modules/movies/services/api_service.dart';
-import 'modules/movies/viewmodel/movie_list_view_model.dart';
 
 import 'core/constants/application_constants.dart';
 import 'core/init/language/language_manager.dart';
 import 'core/init/navigation/navigation_route.dart';
 import 'core/init/navigation/navigation_service.dart';
 import 'modules/movies/bloc/movies_bloc.dart';
+import 'modules/movies/services/api_service.dart';
+import 'modules/movies/viewmodel/movie_list_view_model.dart';
 import 'modules/movies/views/movie_list_view.dart';
 import 'style/colors.dart';
 
