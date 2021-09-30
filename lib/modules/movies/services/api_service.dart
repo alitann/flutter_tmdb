@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
-import '../../../core/constants/application_constants.dart';
-import '../models/movie.dart';
 import 'package:retrofit/http.dart';
+
+import '../../../core/constants/application_constants.dart';
+import '../models/movie_service_response.dart';
 
 part 'api_service.g.dart';
 
@@ -19,5 +20,5 @@ abstract class ApiService {
   @GET(ApplicationConstants.discoverPath +
       ApplicationConstants.apiKeyParameter +
       ApplicationConstants.apiKey)
-  Future<List<Movie>> getMovies(@Query("page") int pageNumber);
+  Future<MovieServiceResponse> getMovies(@Query("page") int pageNumber);
 }

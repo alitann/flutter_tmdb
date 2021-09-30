@@ -16,19 +16,18 @@ class _ApiService implements ApiService {
   String? baseUrl;
 
   @override
-  Future<List<Movie>> getMovies(pageNumber) async {
+  Future<MovieServiceResponse> getMovies(pageNumber) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'page': pageNumber};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<List<dynamic>>(_setStreamType<List<Movie>>(
-        Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<MovieServiceResponse>(Options(
+                method: 'GET', headers: <String, dynamic>{}, extra: _extra)
             .compose(
                 _dio.options, '/movie?api_key=4ff9d08260ed338797caa272d7df35dd',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    var value = _result.data!
-        .map((dynamic i) => Movie.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = MovieServiceResponse.fromJson(_result.data!);
     return value;
   }
 

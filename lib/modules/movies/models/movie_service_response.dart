@@ -1,6 +1,6 @@
-import '../../../core/network/inetwork_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../../core/network/inetwork_model.dart';
 import 'movie.dart';
 
 part 'movie_service_response.g.dart';

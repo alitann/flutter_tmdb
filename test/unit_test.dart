@@ -1,13 +1,15 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_tmdb/core/constants/application_constants.dart';
 import 'package:flutter_tmdb/modules/movies/bloc/movies_bloc.dart';
 import 'package:flutter_tmdb/modules/movies/models/movie.dart';
+import 'package:flutter_tmdb/modules/movies/services/api_service.dart';
 import 'package:flutter_tmdb/modules/movies/viewmodel/movie_list_view_model.dart';
 import 'package:flutter_tmdb/modules/movies/viewmodel/movie_view_model.dart';
 
 void main() {
-  MovieListViewModel movieListViewModel = MovieListViewModel();
+  MovieListViewModel movieListViewModel = MovieListViewModel(ApiService(Dio()));
   // MockMoviesBloc mockMoviesBloc = MockMoviesBloc();
 
   // MockMovieListRepository movieListRepository = MockMovieListRepository();
