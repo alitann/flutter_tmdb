@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/constants/application_constants.dart';
 import 'core/init/language/language_manager.dart';
+import 'core/init/lifecycle/application_life_cycle_manager.dart';
 import 'core/init/navigation/navigation_route.dart';
 import 'core/init/navigation/navigation_service.dart';
 import 'modules/movies/bloc/movies_bloc.dart';
@@ -30,21 +31,23 @@ class MovieApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      onGenerateRoute: NavigationRoute.instance.generateRoute,
-      navigatorKey: NavigationService.instance.navigatorKey,
-      title: 'Movie App',
-      theme: ThemeData(primarySwatch: ColorConstants.primarySwatchColor),
-      home: BlocProvider<MoviesBloc>(
-        create: (context) => MoviesBloc(
-            movieListViewModel: MovieListViewModel(ApiService(Dio())))
-          ..add(FirstMoviesEvent()),
-        child: const MovieListView(),
+    return ApplicationLifeCycleManager(
+      child: MaterialApp(
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
+        onGenerateRoute: NavigationRoute.instance.generateRoute,
+        navigatorKey: NavigationService.instance.navigatorKey,
+        title: 'Movie App',
+        theme: ThemeData(primarySwatch: ColorConstants.primarySwatchColor),
+        home: BlocProvider<MoviesBloc>(
+          create: (context) => MoviesBloc(
+              movieListViewModel: MovieListViewModel(ApiService(Dio())))
+            ..add(FirstMoviesEvent()),
+          child: const MovieListView(),
+        ),
+        debugShowCheckedModeBanner: false,
       ),
-      debugShowCheckedModeBanner: false,
     );
   }
 }
